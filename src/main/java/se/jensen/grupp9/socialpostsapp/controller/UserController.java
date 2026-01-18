@@ -165,14 +165,16 @@ public class UserController {
      * @return No content if deleted or NOT FOUND/ERROR status.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         try {
             userService.deleteUser(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok("User deleted successfully");
         } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User not found");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting user");
         }
     }
 
@@ -182,15 +184,17 @@ public class UserController {
      * @param id The user's ID.
      * @return No content if deleted, NOT FOUND if user does not exist.
      */
-    @DeleteMapping("/{id}/with-posts")
-    public ResponseEntity<Void> deleteUserWithPosts(@PathVariable Long id) {
-        try {
-            userService.deleteUserWithAllPosts(id);
-            return ResponseEntity.noContent().build();
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+    /**
+     @DeleteMapping("/{id}/with-posts") public ResponseEntity<String> deleteUserWithPosts(@PathVariable Long id) {
+     try {
+     userService.deleteUserWithAllPosts(id);
+     return ResponseEntity.ok("User and all posts deleted successfully");
+     } catch (NoSuchElementException e) {
+     return ResponseEntity.status(HttpStatus.NOT_FOUND)
+     .body("User not found");
+     }
+     }
+     */
 
     /**
      * Creates a new post for a specific user.
