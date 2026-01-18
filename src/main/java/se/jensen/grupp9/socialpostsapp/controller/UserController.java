@@ -204,7 +204,6 @@ public class UserController {
      @PostMapping("/{userId}/posts") public ResponseEntity<PostResponseDto> createPostForUser(
      @PathVariable Long userId,
      @RequestBody PostRequestDto requestDto) {
-
      Post post = postService.createPost(userId, requestDto.getContent());
      PostResponseDto responseDto = DTOMapper.toPostResponseDto(post);
      return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
