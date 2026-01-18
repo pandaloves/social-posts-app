@@ -199,6 +199,7 @@ public class UserController {
      * @param requestDto Post content.
      * @return The created post DTO.
      */
+
     /**
      @PostMapping("/{userId}/posts") public ResponseEntity<PostResponseDto> createPostForUser(
      @PathVariable Long userId,
@@ -216,6 +217,7 @@ public class UserController {
      * @param id The user's ID.
      * @return List of friend user DTOs.
      */
+
     /**
      @GetMapping("/{id}/friends") public ResponseEntity<List<UserDTO>> getFriends(@PathVariable Long id) {
 
