@@ -21,17 +21,25 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
+    // private final PostService postService;
+    //private final FriendshipService friendshipService;
     private final JwtUtil jwtUtil;
 
     /**
      * Constructor for UserController.
      *
-     * @param userService Service for user-related operations.
-     * @param jwtUtil     Utility for JWT token generation and validation.
+     * @param userService       Service for user-related operations.
+     * @param postService       Service for post-related operations.
+     * @param friendshipService Service for managing friendships.
+     * @param jwtUtil           Utility for JWT token generation and validation.
      */
     public UserController(UserService userService,
+                          //     PostService postService,
+                          //  FriendshipService friendshipService,
                           JwtUtil jwtUtil) {
         this.userService = userService;
+        //   this.postService = postService;
+        //  this.friendshipService = friendshipService;
         this.jwtUtil = jwtUtil;
     }
 
@@ -183,4 +191,42 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    /**
+     * Creates a new post for a specific user.
+     *
+     * @param userId     The ID of the user creating the post.
+     * @param requestDto Post content.
+     * @return The created post DTO.
+     */
+
+    /**
+     @PostMapping("/{userId}/posts") public ResponseEntity<PostResponseDto> createPostForUser(
+     @PathVariable Long userId,
+     @RequestBody PostRequestDto requestDto) {
+
+     Post post = postService.createPost(userId, requestDto.getContent());
+     PostResponseDto responseDto = DTOMapper.toPostResponseDto(post);
+     return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+     }
+     */
+
+    /**
+     * Retrieves accepted friends of a user.
+     *
+     * @param id The user's ID.
+     * @return List of friend user DTOs.
+     */
+
+    /**
+     @GetMapping("/{id}/friends") public ResponseEntity<List<UserDTO>> getFriends(@PathVariable Long id) {
+
+     List<UserDTO> friends = friendshipService.getAcceptedFriends(id)
+     .stream()
+     .map(DTOMapper::toUserDTO)
+     .collect(Collectors.toList());
+
+     return ResponseEntity.ok(friends);
+     }
+     */
 }
