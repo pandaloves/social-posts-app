@@ -1,4 +1,4 @@
-package se.jensen.meiying.socialpostsapp;
+package se.jensen.grupp9.socialpostsapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
