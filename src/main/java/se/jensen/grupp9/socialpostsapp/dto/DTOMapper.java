@@ -1,5 +1,7 @@
 package se.jensen.grupp9.socialpostsapp.dto;
 
+import se.jensen.grupp9.socialpostsapp.model.Comment;
+import se.jensen.grupp9.socialpostsapp.model.Post;
 import se.jensen.grupp9.socialpostsapp.model.User;
 
 
@@ -40,5 +42,44 @@ public class DTOMapper {
         dto.setEmail(user.getEmail());
         dto.setBio(user.getBio());
         return dto;
+    }
+
+    /**
+     *  Converts a Post entity to a PostResponseDTO
+     */
+    public static PostResponseDTO toPostResponseDTO(Post post) {
+        if (post == null) return null;
+
+        PostResponseDTO dto = new PostResponseDTO(
+                post.getId(),
+                post.getText(),
+                post.getCreatedAt(),
+                post.getUpdatedAt(),
+                toUserDTO(post.getUser()),
+                null//comments
+        );
+        return dto;
+    }
+
+    /**
+     *  Converts a CommentRequestDTO to Comment entity
+     */
+   public static Comment toComment(CommentRequestDTO dto) {
+       if (dto == null) return null;
+       return new Comment(dto.text());
+   }
+
+    /**
+     * Converts a Comment entity to CommentResponseDTO
+     */
+    public static CommentResponseDTO toCommentResponseDTO(Comment comment) {
+        if (comment == null) return null;
+
+        return new CommentResponseDTO(
+                comment.getId(),
+                comment.getText(),
+                comment.getCreatedAt(),
+                toUserDTO(comment.getUser())
+        );
     }
 }
