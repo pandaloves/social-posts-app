@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
 @Table(name = "comment")
 public class Comment {
 
@@ -30,7 +31,7 @@ public class Comment {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     /**
      * The text content of the comment

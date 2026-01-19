@@ -1,5 +1,6 @@
 package se.jensen.grupp9.socialpostsapp.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import se.jensen.grupp9.socialpostsapp.model.Comment;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * @see Comment
  */
 @Repository
-public interface CommentRepository {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     /**
      * Find all comments for a specific post ordered by creation date (oldest first)
@@ -29,7 +30,7 @@ public interface CommentRepository {
     /**
      * Find all comments for a specific post.
      *
-     * @param postId The post ID
+     * @param postId The posts ID
      * @return List of comments for the post
      */
     List<Comment> findByPostId(Long postId);
