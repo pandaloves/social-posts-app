@@ -58,11 +58,11 @@ public class CommentController {
      * @param postId The ID of the post
      * @return A reponse entity with the DTO of the created comment
      */
-    @PostMapping("posts/{postId}")
+    @PostMapping("/posts/{postId}")
     public ResponseEntity<CommentResponseDTO> postComment(
             @Valid @RequestBody CommentRequestDTO dto,
             @PathVariable Long postId){
-        CommentResponseDTO newComment = commentService.createComment(id, dto);
+        CommentResponseDTO newComment = commentService.createComment(postId, dto);
         return ResponseEntity.ok(newComment);
     }
 
