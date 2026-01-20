@@ -50,4 +50,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Ett oväntat fel inträffade: " + ex.getMessage());
     }
+
+    /**
+     * Handles the PostNotFoundException
+     *
+     * @param ex the thrown PostNotFoundException
+     * @return a ResponseEntity with HTTP status 404 (NOT_FOUND)
+     */
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<String> handlePostNotFound(PostNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    /**
+     * Handles CommentNotFoundException.
+     *
+     * @param ex the thrown CommentNotFoundException
+     * @return a ResponseEntity with HTTP status 404 (NOT_FOUND)
+     */
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<String> handleCommentNotFound(CommentNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }
