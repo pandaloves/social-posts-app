@@ -20,17 +20,14 @@ import se.jensen.grupp9.socialpostsapp.service.PostService;
 @RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
-    private final CommentService commentService;
 
     /**
      * Constructor for PostController
      *
      * @param postService Service for post operations
-     * @param commentService Service for comment operations
      */
     public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
-        this.commentService = commentService;
     }
 
     /**
