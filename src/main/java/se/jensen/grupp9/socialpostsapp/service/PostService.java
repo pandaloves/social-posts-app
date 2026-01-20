@@ -54,6 +54,18 @@ public class PostService {
     }
 
     /**
+     * Get a single post
+     *
+     * @param id The posts ID
+     * @return A PostResponseDTO
+     */
+    public PostResponseDTO getPostById(Long id) {
+        return DTOMapper.toPostResponseDTO(
+                postRepository.findById(id)
+                        .orElseThrow(()-> new PostNotFoundException("Post not found with id: " + id)));
+    }
+
+    /**
      * Create a post
      *
      * @param userId The posts user
