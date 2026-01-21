@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import se.jensen.grupp9.socialpostsapp.dto.*;
 import se.jensen.grupp9.socialpostsapp.model.User;
 import se.jensen.grupp9.socialpostsapp.security.JwtUtil;
+import se.jensen.grupp9.socialpostsapp.service.PostService;
 import se.jensen.grupp9.socialpostsapp.service.UserService;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
-    // private final PostService postService;
+    private final PostService postService;
     //private final FriendshipService friendshipService;
     private final JwtUtil jwtUtil;
 
@@ -34,11 +35,11 @@ public class UserController {
      * @param jwtUtil           Utility for JWT token generation and validation.
      */
     public UserController(UserService userService,
-                          //     PostService postService,
-                          //  FriendshipService friendshipService,
+                          PostService postService,
+                          // FriendshipService friendshipService,
                           JwtUtil jwtUtil) {
         this.userService = userService;
-        //   this.postService = postService;
+        this.postService = postService;
         //  this.friendshipService = friendshipService;
         this.jwtUtil = jwtUtil;
     }
@@ -184,17 +185,17 @@ public class UserController {
      * @param id The user's ID.
      * @return No content if deleted, NOT FOUND if user does not exist.
      */
-    /**
-     @DeleteMapping("/{id}/with-posts") public ResponseEntity<String> deleteUserWithPosts(@PathVariable Long id) {
-     try {
-     userService.deleteUserWithAllPosts(id);
-     return ResponseEntity.ok("User and all posts deleted successfully");
-     } catch (NoSuchElementException e) {
-     return ResponseEntity.status(HttpStatus.NOT_FOUND)
-     .body("User not found");
-     }
-     }
-     */
+
+    @DeleteMapping("/{id}/with-posts")
+    public ResponseEntity<String> deleteUserWithPosts(@PathVariable Long id) {
+        try {
+            userService.deleteUserWithAllPosts(id);
+            return ResponseEntity.ok("User and all posts deleted successfully");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User not found");
+        }
+    }
 
     /**
      * Creates a new post for a specific user.
@@ -204,15 +205,15 @@ public class UserController {
      * @return The created post DTO.
      */
 
-    /**
-     @PostMapping("/{userId}/posts") public ResponseEntity<PostResponseDto> createPostForUser(
-     @PathVariable Long userId,
-     @RequestBody PostRequestDto requestDto) {
-     Post post = postService.createPost(userId, requestDto.getContent());
-     PostResponseDto responseDto = DTOMapper.toPostResponseDto(post);
-     return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
-     }
-     */
+    @PostMapping("/{userId}/posts")
+    public ResponseEntity<PostResponseDTO> createPostForUser(
+            @PathVariable Long userId,
+            @RequestBody PostRequestDTO requestDto) {
+
+        PostResponseDTO responseDto = postService.createPost(userId, requestDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
 
     /**
      * Retrieves accepted friends of a user.
@@ -221,15 +222,15 @@ public class UserController {
      * @return List of friend user DTOs.
      */
 
-    /**
-     @GetMapping("/{id}/friends") public ResponseEntity<List<UserDTO>> getFriends(@PathVariable Long id) {
+/**
+ @GetMapping("/{id}/friends") public ResponseEntity<List<UserDTO>> getFriends(@PathVariable Long id) {
 
-     List<UserDTO> friends = friendshipService.getAcceptedFriends(id)
-     .stream()
-     .map(DTOMapper::toUserDTO)
-     .collect(Collectors.toList());
+ List<UserDTO> friends = friendshipService.getAcceptedFriends(id)
+ .stream()
+ .map(DTOMapper::toUserDTO)
+ .collect(Collectors.toList());
 
-     return ResponseEntity.ok(friends);
-     }
-     */
+ return ResponseEntity.ok(friends);
+ }
+ */
 }

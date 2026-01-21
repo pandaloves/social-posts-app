@@ -16,8 +16,8 @@ import se.jensen.grupp9.socialpostsapp.repository.UserRepository;
 /**
  * Service for Post entity operations.
  * <p>
- *     Handles business logic for creating, reading, updating nd deleting posts.
- *     Allows for pagination and filter by user.
+ * Handles business logic for creating, reading, updating nd deleting posts.
+ * Allows for pagination and filter by user.
  * </p>
  */
 @Service
@@ -44,7 +44,7 @@ public class PostService {
     /**
      * Get all posts with a specific user with pagination
      *
-     * @param userId User ID
+     * @param userId   User ID
      * @param pageable Pagination parameters
      * @return Page of PostResponseDTOs with that user
      */
@@ -62,19 +62,19 @@ public class PostService {
     public PostResponseDTO getPostById(Long id) {
         return DTOMapper.toPostResponseDTO(
                 postRepository.findById(id)
-                        .orElseThrow(()-> new PostNotFoundException("Post not found with id: " + id)));
+                        .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + id)));
     }
 
     /**
      * Create a post
      *
      * @param userId The posts user
-     * @param dto The PostRequestDTO
+     * @param dto    The PostRequestDTO
      * @return Created PostResponseDTO
      */
     public PostResponseDTO createPost(Long userId, PostRequestDTO dto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()->new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Post post = new Post(dto.text());
         post.setUser(user);
@@ -86,13 +86,13 @@ public class PostService {
     /**
      * Update an existing post
      *
-     * @param id The posts id
+     * @param id  The posts id
      * @param dto The postRequestDTO with updated values
      * @return Updated PostResponseDTO
      */
     public PostResponseDTO updatePost(Long id, PostRequestDTO dto) {
         Post post = postRepository.findById(id)
-                .orElseThrow(()->new PostNotFoundException("Post not found with id:" + id));
+                .orElseThrow(() -> new PostNotFoundException("Post not found with id:" + id));
         post.setText(dto.text());
         Post updatedPost = postRepository.save(post);
         return DTOMapper.toPostResponseDTO(updatedPost);
@@ -105,7 +105,7 @@ public class PostService {
      */
     public void deletePost(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(()->new PostNotFoundException("Post not found with id:" + id));
+                .orElseThrow(() -> new PostNotFoundException("Post not found with id:" + id));
         postRepository.delete(post);
     }
 }
