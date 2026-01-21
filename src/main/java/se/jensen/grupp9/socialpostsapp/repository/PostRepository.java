@@ -3,6 +3,7 @@ package se.jensen.grupp9.socialpostsapp.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import se.jensen.grupp9.socialpostsapp.model.Post;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * Repository for Post entity
  *
  * <p>
- *     Provides database operations for posts including pagination and filtering by user.
+ * Provides database operations for posts including pagination and filtering by user.
  * </p>
  *
  * @see Post
@@ -24,7 +25,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      *
      * @return List of all posts ordered by createdAt descending
      */
-    List<Post> findAllOrderByCreatedAtDesc();
+    @Query("SELECT p FROM Post p")
+    List<Post> findAllOrderByCreatedAtDesc(Pageable pageable);
 
     /**
      * Find all posts with pagination.
@@ -38,7 +40,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     /**
      * Find all posts by a specific user with pagination
      *
-     * @param userId The user ID
+     * @param userId   The user ID
      * @param pageable Pagination parameters
      * @return Page of posts for the user
      */
