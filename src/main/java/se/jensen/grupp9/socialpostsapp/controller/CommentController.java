@@ -12,8 +12,7 @@ import java.util.List;
 
 /**
  * REST controller for handling comment-related actions and endpoints.
- * Supports getting all comments for a post, getting a single comment,
- * as well as creating, updating and removing a comment.
+ * Supports getting a single comment, updating a comment and removing a comment.
  */
 @RestController
 @RequestMapping("/comments")
@@ -30,18 +29,6 @@ public class CommentController {
     }
 
     /**
-     * Get all comments belonging to a certain post in order of createdAt (oldest first)
-     *
-     * @param postId The ID of the post
-     * @return ResponseEntity of List<CommentResponseDTO> type
-     */
-    @GetMapping("/posts/{postId}/comments")
-    public ResponseEntity<List<CommentResponseDTO>> getComments(@PathVariable Long postId){
-        List<CommentResponseDTO> comments = commentService.getAllCommentsByPostId(postId);
-        return ResponseEntity.ok(comments);
-    }
-
-    /**
      * Get a single comment from the comment ID
      * @param id The ID of the comment
      * @return A ResponseEntity of CommentResponseDTO type
@@ -51,20 +38,6 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getCommentById(id));
     }
 
-    /**
-     * Post a comment on a post
-     *
-     * @param dto The commentRequestDTO for the new comment
-     * @param postId The ID of the post
-     * @return A reponse entity with the DTO of the created comment
-     */
-    @PostMapping("/posts/{postId}")
-    public ResponseEntity<CommentResponseDTO> postComment(
-            @Valid @RequestBody CommentRequestDTO dto,
-            @PathVariable Long postId){
-        CommentResponseDTO newComment = commentService.createComment(postId, dto);
-        return ResponseEntity.ok(newComment);
-    }
 
     /**
      * Updating a comment

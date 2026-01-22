@@ -6,20 +6,29 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import se.jensen.grupp9.socialpostsapp.dto.CommentRequestDTO;
+import se.jensen.grupp9.socialpostsapp.dto.CommentResponseDTO;
 import se.jensen.grupp9.socialpostsapp.dto.PostRequestDTO;
 import se.jensen.grupp9.socialpostsapp.dto.PostResponseDTO;
 import se.jensen.grupp9.socialpostsapp.service.CommentService;
 import se.jensen.grupp9.socialpostsapp.service.PostService;
 
+import java.util.List;
+
 /**
  * REST controller for handling post-related actions and endpoints.
+ * <p>
  * Supports getting posts for the feed, filtering by user for user wall,
  * getting a single post, as well as creating, updating and removing a post.
+ * Also contains some post related comment-operations such as getting all comments for a post
+ * and creating a new comment on a post.
+ * </p>
  */
 @RestController
 @RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
+    private final CommentService commentService;
 
     /**
      * Constructor for PostController
@@ -27,6 +36,7 @@ public class PostController {
      * @param postService Service for post operations
      */
     public PostController(PostService postService, CommentService commentService) {
+        this.commentService = commentService;
         this.postService = postService;
     }
 
@@ -103,4 +113,34 @@ public class PostController {
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    /**
+     * Get all comments belonging to a certain post in order of createdAt (oldest first)
+     *
+     * @param postId The ID of the post
+     * @return ResponseEntity of List<CommentResponseDTO> type
+     */
+    @GetMapping("/{postId}/comments")
+    public ResponseEntity<List<CommentResponseDTO>> getPostComments(@PathVariable Long postId){
+        List<CommentResponseDTO> comments = commentService.getAllCommentsByPostId(postId);
+        return ResponseEntity.ok(comments);
+    }
+
+    /**
+     * Post a comment on a post
+     *
+     * @param dto The commentRequestDTO for the new comment
+     * @param postId The ID of the post
+     * @return A reponse entity with the DTO of the created comment
+     */
+    @PostMapping("/{postId}/comments")
+    public ResponseEntity<CommentResponseDTO> createPostComment(
+            @Valid @RequestBody CommentRequestDTO dto,
+            @PathVariable Long postId){
+        CommentResponseDTO newComment = commentService.createComment(postId, dto);
+        return ResponseEntity.ok(newComment);
+    }
+
+
 }
