@@ -22,10 +22,11 @@ jobs:
       - name: Run tests
         run: ./mvnw test
 
+
   build:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' #build at push to main
 
     steps:
       - uses: actions/checkout@v3
