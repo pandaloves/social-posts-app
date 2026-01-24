@@ -112,7 +112,7 @@ public class CommentServiceTest {
         // mock userrepo returns testPost optional when findById is called with 1L
         when(postRepository.findById(1L)).thenReturn(Optional.of(testPost));
         when(commentRepository.save(any(Comment.class))).thenReturn(testComment);
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testPost));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
 
         //act CommentService createCommentMethod with values 1L and commentRequestDTO
         CommentResponseDTO result = commentService.createComment(1L, 1L, commentRequestDTO);
