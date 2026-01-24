@@ -109,7 +109,7 @@ public class CommentServiceTest {
         when(commentRepository.save(any(Comment.class))).thenReturn(testComment);
 
         //act CommentService createCommentMethod with values 1L and commentRequestDTO
-        CommentResponseDTO result = commentService.createComment(1L, commentRequestDTO);
+        CommentResponseDTO result = commentService.createComment(1L, 1L, commentRequestDTO);
 
         //assert(not null, correct text value, findById called 1 time, save called 1 time
         assertNotNull(result);
@@ -126,7 +126,7 @@ public class CommentServiceTest {
         //act(CommentService createCommment method),
         // assert(findById called 1 time, PostNotFoundException thrown)
         assertThrows(PostNotFoundException.class, () ->
-                commentService.createComment(1L, commentRequestDTO));
+                commentService.createComment(1L, 1L, commentRequestDTO));
         verify(postRepository, times(1)).findById(1L);
     }
 
