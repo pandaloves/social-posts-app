@@ -137,8 +137,9 @@ public class PostController {
     @PostMapping("/{postId}/comments")
     public ResponseEntity<CommentResponseDTO> createPostComment(
             @Valid @RequestBody CommentRequestDTO dto,
-            @PathVariable Long postId){
-        CommentResponseDTO newComment = commentService.createComment(postId, dto);
+            @PathVariable Long postId,
+            @RequestParam Long userID){
+        CommentResponseDTO newComment = commentService.createComment(postId, userID, dto);
         return ResponseEntity.ok(newComment);
     }
 
