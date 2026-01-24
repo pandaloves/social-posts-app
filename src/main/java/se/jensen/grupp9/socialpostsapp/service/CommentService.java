@@ -9,8 +9,10 @@ import se.jensen.grupp9.socialpostsapp.exception.CommentNotFoundException;
 import se.jensen.grupp9.socialpostsapp.exception.PostNotFoundException;
 import se.jensen.grupp9.socialpostsapp.model.Comment;
 import se.jensen.grupp9.socialpostsapp.model.Post;
+import se.jensen.grupp9.socialpostsapp.model.User;
 import se.jensen.grupp9.socialpostsapp.repository.CommentRepository;
 import se.jensen.grupp9.socialpostsapp.repository.PostRepository;
+import se.jensen.grupp9.socialpostsapp.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +29,12 @@ import static java.util.stream.Collectors.toList;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public CommentService(CommentRepository commentRepository, PostRepository postRepository) {
+    public CommentService(CommentRepository commentRepository, PostRepository postRepository, UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -65,11 +69,15 @@ public class CommentService {
      * @param dto The CommentRequestDTO
      * @return Created CommentResponseDTO
      */
-    public CommentResponseDTO createComment(Long postId, CommentRequestDTO dto) {
+    public CommentResponseDTO createComment(Long postId, Long userId, CommentRequestDTO dto) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new PostNotFoundException("Post not found with id:" + postId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new IllegalArgumentException("User not found with id:" + userId));
+
         Comment comment = DTOMapper.toComment(dto);
         comment.setPost(post);
+        comment.setUser(user);
         commentRepository.save(comment);
         return DTOMapper.toCommentResponseDTO(comment);
     }
