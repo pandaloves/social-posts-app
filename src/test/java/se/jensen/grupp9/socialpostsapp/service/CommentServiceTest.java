@@ -16,6 +16,7 @@ import se.jensen.grupp9.socialpostsapp.model.Post;
 import se.jensen.grupp9.socialpostsapp.model.User;
 import se.jensen.grupp9.socialpostsapp.repository.CommentRepository;
 import se.jensen.grupp9.socialpostsapp.repository.PostRepository;
+import se.jensen.grupp9.socialpostsapp.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,9 @@ public class CommentServiceTest {
 
     @Mock
     private PostRepository postRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
     @InjectMocks
     private CommentService commentService;
@@ -104,23 +108,30 @@ public class CommentServiceTest {
     @Test
     void testCreateComment() {
         //arrange (mock post-repo returns testPost when findById is called with 1L,
-        // mock comment-repo returns testComment when save is called with any value)
+        // mock comment-repo returns testComment when save is called with any value),
+        // mock userrepo returns testPost optional when findById is called with 1L
         when(postRepository.findById(1L)).thenReturn(Optional.of(testPost));
         when(commentRepository.save(any(Comment.class))).thenReturn(testComment);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(testPost));
 
         //act CommentService createCommentMethod with values 1L and commentRequestDTO
         CommentResponseDTO result = commentService.createComment(1L, 1L, commentRequestDTO);
 
-        //assert(not null, correct text value, findById called 1 time, save called 1 time
+        //assert(not null, correct text value,
+        // findById in user repo called 1 time,
+        // save called 1 time
+        // findById in comment repo called 1 time )
         assertNotNull(result);
         assertEquals("test comment", result.text());
         verify(postRepository, times(1)).findById(1L);
         verify(commentRepository, times(1)).save(any(Comment.class));
+        verify(userRepository, times(1)).findById(1L);
+
     }
 
     @Test
     void testCreateComment_fail() {
-        // arrange(mock post-repo returns empty optional when findById is called with any value)
+        // arrange(mock post-repo returns empty optional when findById is called with any value,,
         when(postRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         //act(CommentService createCommment method),
