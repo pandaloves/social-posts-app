@@ -92,7 +92,7 @@ public class UserController {
      * @param registrationDTO The user registration data.
      * @return The created user's DTO or error response.
      */
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<UserDTO> createUser(@RequestBody UserRegistrationDTO registrationDTO) {
         try {
             User user = userService.createUser(registrationDTO);
